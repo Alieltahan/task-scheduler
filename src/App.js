@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
 import { AuthProvider } from './components/Auth/AuthProvider';
-import Home from './components/Home/Home';
 import Navbar from './components/Navbar/Navbar';
 import LandingPage from './pages/landingPage';
 import SigninPage from './pages/signinPage';
@@ -26,20 +25,26 @@ function App() {
           <Route
             path="/home"
             element={
-              userLoggedIn ? <Home /> : <Navigate to="/signin" replace />
+              userLoggedIn ? <HomePage /> : <Navigate to="/signin" replace />
             }
           />
           <Route
             path="/signin"
-            element={userLoggedIn ? <HomePage /> : <SigninPage />}
+            element={
+              userLoggedIn ? <Navigate to="/home" replace /> : <SigninPage />
+            }
           />
           <Route
             path="/signup"
-            element={userLoggedIn ? <HomePage /> : <SignupPage />}
+            element={
+              userLoggedIn ? <Navigate to="/home" replace /> : <SignupPage />
+            }
           />
           <Route
             path="/"
-            element={userLoggedIn ? <HomePage /> : <LandingPage />}
+            element={
+              userLoggedIn ? <Navigate to="/home" replace /> : <LandingPage />
+            }
           />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
