@@ -1,5 +1,30 @@
+:root {
+  --color-font-primary: #000;
+  --color-font-secondary: rgb(133, 95, 27);
+  --color-white: #fff;
+  --color-hover-bg: #cccccc3b;
+  --font-size-primary: 2rem;
+  --font-size-secondary: 1.8rem;
+  --font-size-header: 3rem;
+  --font-size-paragraph: 1.5rem;
+  font-size: 62.5%;
+}
+a {
+  text-decoration: none;
+}
+a:visited {
+  color: var(--color-font-primary);
+}
+/* Classes for Active Links */
+a.active {
+  color: var(--color-white);
+  background-color: wheat;
+  border-radius: 10px;
+}
 .App {
   text-align: center;
+  /* Navbar Height */
+  padding-top: 64px;
 }
 
 .App-logo {
