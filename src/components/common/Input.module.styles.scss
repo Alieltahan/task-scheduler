@@ -19,13 +19,13 @@
 
     &__input {
       font-size: 1.5rem;
-      border: none;
+      // border: none;
+      border-bottom: 1px solid #000;
       color: black;
       font-family: inherit;
       outline: none;
       display: block;
-      width: 50%;
-      border-bottom: 3px solid;
+      width: 35%;
       padding: 1rem 1.5rem;
       border-bottom: 3px solid transparent;
       transition: all 0.3s;
@@ -52,7 +52,7 @@
       transition: all 0.3s;
       display: block;
       transform: translateY(-7.5rem);
-      width: 50%;
+      width: 35%;
       text-align: left;
     }
     &__label.textarea {
@@ -68,7 +68,7 @@
       font-weight: 400;
       visibility: hidden;
       text-align: left;
-      width: 50%;
+      width: 35%;
       transform: translateY(-4rem);
     }
     &__btn {
@@ -107,7 +107,7 @@
       &::before {
         margin: auto;
         display: flex;
-        width: 50%;
+        width: 35%;
         margin-bottom: 3rem;
         height: 10px;
         content: '';

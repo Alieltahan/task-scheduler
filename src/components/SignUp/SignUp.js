@@ -39,60 +39,58 @@ const Signup = () => {
     setSubmitting(false);
   };
   return (
-    <div className="container">
-      <form
-        className="form"
-        onSubmit={handleSubmit}
-        method="POST"
-        id="contact-form"
-      >
-        <fieldset disabled={submitting} aria-busy={submitting}>
-          <Input
-            label="First name"
-            name="firstName"
-            value={inputs.firstName}
-            onChange={handleChange}
-            type="text"
-          />
-          <Input
-            label="Last name"
-            name="lastName"
-            value={inputs.lastName}
-            onChange={handleChange}
-            type="text"
-          />
-          <Input
-            label="Email"
-            name="email"
-            value={inputs.email}
-            onChange={handleChange}
-            type="email"
-          />
-          <Input
-            label="Password"
-            name="password1"
-            value={inputs.password1}
-            onChange={handleChange}
-            type="password"
-          />
-          <Input
-            label="Confirm password"
-            name="password2"
-            value={inputs.password2}
-            onChange={handleChange}
-            type="password"
-          />
-          <button
-            type="submit"
-            value="submit"
-            className="form__btn"
-            disabled={submitting}
-          >
-            Submit
-          </button>
-        </fieldset>
-      </form>
-    </div>
+    <form
+      className="form"
+      onSubmit={handleSubmit}
+      method="POST"
+      id="contact-form"
+    >
+      <fieldset disabled={submitting} aria-busy={submitting}>
+        <Input
+          label="First name"
+          name="firstName"
+          value={inputs.firstName}
+          onChange={handleChange}
+          type="text"
+        />
+        <Input
+          label="Last name"
+          name="lastName"
+          value={inputs.lastName}
+          onChange={handleChange}
+          type="text"
+        />
+        <Input
+          label="Email"
+          name="email"
+          value={inputs.email}
+          onChange={handleChange}
+          type="email"
+        />
+        <Input
+          label="Password"
+          name="password1"
+          value={inputs.password1}
+          onChange={handleChange}
+          type="password"
+        />
+        <Input
+          label="Confirm password"
+          name="password2"
+          value={inputs.password2}
+          onChange={handleChange}
+          type="password"
+        />
+        <button
+          type="submit"
+          value="submit"
+          className="form__btn"
+          disabled={submitting}
+        >
+          Submit
+        </button>
+      </fieldset>
+    </form>
   );
 };
 
