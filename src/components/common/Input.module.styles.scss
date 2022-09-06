@@ -1,0 +1,150 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  input {
+    padding: 0.5rem;
+  }
+  .form {
+    padding-left: 3rem;
+    &__group {
+      display: flex;
+      justify-items: center;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    &__group:not(:last-child) {
+      margin-bottom: 0.8rem;
+    }
+
+    &__input {
+      font-size: 1.5rem;
+      border: none;
+      color: black;
+      font-family: inherit;
+      outline: none;
+      display: block;
+      width: 50%;
+      border-bottom: 3px solid;
+      padding: 1rem 1.5rem;
+      border-bottom: 3px solid transparent;
+      transition: all 0.3s;
+      &:focus {
+        outline: none;
+        border-bottom: 3px solid green;
+        box-shadow: 0 1rem 2rem rgba($color: #000000, $alpha: 0.1);
+      }
+
+      &:focus:invalid {
+        border-bottom: 3px solid red;
+      }
+
+      &::-webkit-input-placeholder {
+        color: #ccc;
+        font-weight: 400;
+      }
+    }
+
+    &__label {
+      font-size: 1.2rem;
+      font-weight: 700;
+      padding: 1rem 1.5rem;
+      transition: all 0.3s;
+      display: block;
+      transform: translateY(-7.5rem);
+      width: 50%;
+      text-align: left;
+    }
+    &__label.textarea {
+      transform: translateY(-13.2rem);
+    }
+    &__input:placeholder-shown + &__label.textarea {
+      transform: translateY(-10rem);
+    }
+
+    &__input:placeholder-shown &__label {
+      opacity: 0;
+      font-size: 1rem;
+      font-weight: 400;
+      visibility: hidden;
+      text-align: left;
+      width: 50%;
+      transform: translateY(-4rem);
+    }
+    &__btn {
+      font-size: 1.5rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.5s;
+      background-color: var(--color-font-secondary);
+      color: #fff;
+      text-align: center;
+      margin: 1rem 0;
+
+      &:hover {
+        transform: translateY(-0.5rem);
+        box-shadow: 0 1px 28px rgba(255, 152, 0, 66%);
+        //   transform: translate(0, -9px);
+        outline: none;
+        cursor: pointer;
+      }
+      &:active {
+        transform: translateY(-0.1rem);
+      }
+    }
+    fieldset {
+      border: 0;
+      padding: 0;
+      &[disabled] {
+        opacity: 0.5;
+      }
+      &::before {
+        margin: auto;
+        display: flex;
+        width: 50%;
+        margin-bottom: 3rem;
+        height: 10px;
+        content: '';
+        background-image: linear-gradient(
+          to right,
+          #ff3019 0%,
+          #e2b04a 50%,
+          #ff3019 100%
+        );
+      }
+      &[aria-busy='true']::before {
+        background-size: 50% auto;
+        animation: loading 0.5s linear infinite;
+      }
+    }
+  }
+  @keyframes loading {
+    from {
+      background-position: 0 0;
+      /* rotate: 0; */
+    }
+
+    to {
+      background-position: 100% 100%;
+      /* rotate: 360deg; */
+    }
+  }
+
+  .mailSent {
+    background-color: green;
+    border-radius: 50%;
+    width: 5rem;
+    height: 5rem;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+}
