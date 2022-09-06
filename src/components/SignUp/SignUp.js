@@ -4,6 +4,8 @@ import './SignUp.module.styles.scss';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../Firebase';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -14,10 +16,12 @@ const Signup = () => {
     password1: '',
     password2: '',
   });
-  // TODO >>>
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
+    if (inputs.password1 !== inputs.password2)
+      return toast.error(`Passwords doesn't match!`);
     try {
       const respond = await createUserWithEmailAndPassword(
         auth,
@@ -25,13 +29,14 @@ const Signup = () => {
         inputs.password1
       );
       const { user } = respond;
-      console.log(`Success Signed UP!`, user);
       resetForm();
+      if (!!user) navigate('/home');
+      toast.success(`Sign up completed!`);
     } catch (err) {
       console.error(`Error--->`, err.message);
+      toast.error(err.message);
     }
     setSubmitting(false);
-    console.log(inputs);
   };
   return (
     <div className="container">
@@ -57,7 +62,7 @@ const Signup = () => {
             type="text"
           />
           <Input
-            label="Email name"
+            label="Email"
             name="email"
             value={inputs.email}
             onChange={handleChange}
@@ -77,7 +82,12 @@ const Signup = () => {
             onChange={handleChange}
             type="password"
           />
-          <button type="submit" value="submit" className="form__btn">
+          <button
+            type="submit"
+            value="submit"
+            className="form__btn"
+            disabled={submitting}
+          >
             Submit
           </button>
         </fieldset>
