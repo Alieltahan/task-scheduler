@@ -1,11 +1,12 @@
 import Input from '../common/Input';
 import useForm from '../lib/useForm';
 import './SignUp.module.styles.scss';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../Firebase';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { auth, db } from '../../Firebase';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { doc, setDoc } from 'firebase/firestore';
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -20,8 +21,10 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    if (inputs.password1 !== inputs.password2)
+    if (inputs.password1 !== inputs.password2) {
+      setSubmitting(false);
       return toast.error(`Passwords doesn't match!`);
+    }
     try {
       const respond = await createUserWithEmailAndPassword(
         auth,
@@ -29,6 +32,18 @@ const Signup = () => {
         inputs.password1
       );
       const { user } = respond;
+      // Update User Profile Displayname
+      updateProfile(auth.currentUser, {
+        displayName: inputs.firstName,
+      });
+      // Create user Doc Data
+      await setDoc(doc(db, `users`, `${user.uid}`), {
+        firstName: inputs.firstName,
+        lastName: inputs.lastName,
+        email: inputs.email,
+        uid: user.uid,
+      });
+
       resetForm();
       if (!!user) navigate('/home');
       toast.success(`Sign up completed!`);
@@ -52,6 +67,7 @@ const Signup = () => {
           value={inputs.firstName}
           onChange={handleChange}
           type="text"
+          required={true}
         />
         <Input
           label="Last name"
@@ -59,6 +75,7 @@ const Signup = () => {
           value={inputs.lastName}
           onChange={handleChange}
           type="text"
+          required={false}
         />
         <Input
           label="Email"
@@ -66,6 +83,7 @@ const Signup = () => {
           value={inputs.email}
           onChange={handleChange}
           type="email"
+          required={true}
         />
         <Input
           label="Password"
@@ -73,6 +91,7 @@ const Signup = () => {
           value={inputs.password1}
           onChange={handleChange}
           type="password"
+          required={true}
         />
         <Input
           label="Confirm password"
@@ -80,6 +99,7 @@ const Signup = () => {
           value={inputs.password2}
           onChange={handleChange}
           type="password"
+          required={true}
         />
         <button
           type="submit"
