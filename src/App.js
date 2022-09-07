@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import './App.css';
-import { AuthProvider } from './components/Auth/AuthProvider';
 import Navbar from './components/Navbar/Navbar';
 import LandingPage from './pages/landingPage';
 import SigninPage from './pages/signinPage';
@@ -10,45 +9,48 @@ import NotFoundPage from './pages/notFoundPage';
 import { useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './Firebase';
+import Loader from './components/Loader/loader';
+import EditTaskPage from './pages/editTaskPage';
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
   onAuthStateChanged(auth, (user) => {
-    console.log(`App`, !!user?.uid);
     setUserLoggedIn(!!user?.uid);
+    setLoading(false);
   });
+  if (loading) return <Loader />;
   return (
     <div className="App">
-      <AuthProvider>
-        <Navbar />
-        <Routes>
-          <Route
-            path="/home"
-            element={
-              userLoggedIn ? <HomePage /> : <Navigate to="/signin" replace />
-            }
-          />
-          <Route
-            path="/signin"
-            element={
-              userLoggedIn ? <Navigate to="/home" replace /> : <SigninPage />
-            }
-          />
-          <Route
-            path="/signup"
-            element={
-              userLoggedIn ? <Navigate to="/home" replace /> : <SignupPage />
-            }
-          />
-          <Route
-            path="/"
-            element={
-              userLoggedIn ? <Navigate to="/home" replace /> : <LandingPage />
-            }
-          />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-      </AuthProvider>
+      <Navbar />
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            userLoggedIn ? <HomePage /> : <Navigate to="/signin" replace />
+          }
+        />
+        <Route path="/task/:id" element={<EditTaskPage />} />
+        <Route
+          path="/signin"
+          element={
+            userLoggedIn ? <Navigate to="/home" replace /> : <SigninPage />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            userLoggedIn ? <Navigate to="/home" replace /> : <SignupPage />
+          }
+        />
+        <Route
+          path="/"
+          element={
+            userLoggedIn ? <Navigate to="/home" replace /> : <LandingPage />
+          }
+        />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
     </div>
   );
 }
