@@ -25,6 +25,7 @@ const Signin = () => {
       );
       toast.success(`Login success`);
       resetForm();
+      console.log(user);
       if (user) navigate('/home');
     } catch (err) {
       console.error(`Error: Sign in --->`, err.message);
@@ -33,37 +34,35 @@ const Signin = () => {
     setSubmitting(false);
   };
   return (
-    <>
-      <div className="container">
-        <form
-          className="form"
-          onSubmit={handleSubmit}
-          method="POST"
-          id="contact-form"
-        >
-          <fieldset disabled={submitting} aria-busy={submitting}>
-            <Input
-              label="Email"
-              name="email"
-              value={inputs.email}
-              onChange={handleChange}
-              type="email"
-            />
+    <form
+      className="form"
+      onSubmit={handleSubmit}
+      method="POST"
+      id="contact-form"
+    >
+      <fieldset disabled={submitting} aria-busy={submitting}>
+        <Input
+          label="Email"
+          name="email"
+          value={inputs.email}
+          onChange={handleChange}
+          type="email"
+          required={true}
+        />
 
-            <Input
-              label="Password"
-              name="password"
-              value={inputs.password}
-              onChange={handleChange}
-              type="password"
-            />
-            <button type="submit" value="submit" className="form__btn">
-              Submit
-            </button>
-          </fieldset>
-        </form>
-      </div>
-    </>
+        <Input
+          label="Password"
+          name="password"
+          value={inputs.password}
+          onChange={handleChange}
+          type="password"
+          required={true}
+        />
+        <button type="submit" value="submit" className="form__btn">
+          Submit
+        </button>
+      </fieldset>
+    </form>
   );
 };
 
