@@ -1,5 +1,13 @@
+import AddTask from './AddTask/AddTask';
+import Tasks from './Tasks/Tasks';
+
 const Home = () => {
-  return <h1>Home</h1>;
+  return (
+    <>
+      <AddTask />
+      <Tasks />
+    </>
+  );
 };
 
 export default Home;
