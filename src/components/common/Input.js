@@ -1,6 +1,6 @@
 import './Input.module.styles.scss';
 
-const Input = ({ label, name, type, value, onChange }) => {
+const Input = ({ label, name, type, value, onChange, required }) => {
   return (
     <div className="form__group">
       <input
@@ -15,7 +15,7 @@ const Input = ({ label, name, type, value, onChange }) => {
             ? `${label} (optional)`
             : `${label}`
         }
-        required={name !== 'lastName' || name !== 'description'}
+        required={required}
       />
       <label className="form__label" htmlFor={name}>
         {label}
