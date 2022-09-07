@@ -79,7 +79,11 @@
     background-color: var(--color-font-secondary);
     color: #fff;
     text-align: center;
-    margin: 1rem 0;
+    margin: 1rem 0.5rem;
+    &-del#del {
+      margin-inline-end: 2rem;
+      background-color: #ff3019;
+    }
 
     &:hover {
       transform: translateY(-0.2rem);
