@@ -5,9 +5,11 @@ export default function useForm(initial = {}) {
   const [inputs, setInputs] = useState(initial);
 
   function handleChange(e) {
-    let { value, name } = e.target;
-    // will get executed if we are selecting category @ Pricing Page (STEP 3).
-
+    let { value, name, type } = e.target;
+    // CheckBox special value for Boolean
+    if (type === 'checkbox') {
+      value = !inputs.status;
+    }
     setInputs((prevState) => ({
       // copy the existing state
       ...prevState,
@@ -15,6 +17,15 @@ export default function useForm(initial = {}) {
     }));
   }
 
+  function handleEditFormInit(title, description, priority, status, id) {
+    setInputs({
+      title,
+      description,
+      priority,
+      status,
+      id,
+    });
+  }
   function resetForm() {
     setInputs(initial);
   }
@@ -23,5 +34,6 @@ export default function useForm(initial = {}) {
     inputs,
     handleChange,
     resetForm,
+    handleEditFormInit,
   };
 }
