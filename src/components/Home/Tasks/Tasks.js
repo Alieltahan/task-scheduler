@@ -1,23 +1,19 @@
-import {
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  updateDoc,
-} from 'firebase/firestore';
+import { collection, doc, onSnapshot } from 'firebase/firestore';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
 import { auth, db } from '../../../Firebase';
 import { TasksContainer } from './Tasks.styles';
 import deleteIcon from '../../media/icons/delete.svg';
 import editIcon from '../../media/icons/edit.svg';
 import { Link } from 'react-router-dom';
+import { DelDocFn, UpdateDocFn } from '../../common/CRUD-Firebase';
 
 const Tasks = () => {
   const { currentUser } = auth;
   const [tasks, setTasks] = useState([]);
 
-  const tasksRef = collection(db, 'users', currentUser.uid, 'tasks');
+  // Guard Clause for sign out
+  if (currentUser === null) return;
+  const tasksRef = collection(db, 'users', currentUser?.uid, 'tasks');
   // Real time database query which gets updated once any change happens to the Tasks Collection.
   onSnapshot(tasksRef, (snapshot) => {
     let tasksArr = [];
@@ -31,7 +27,7 @@ const Tasks = () => {
    * @param {Event} e Input Checkbox event
    * function to update Tasks Status (Completed: Yes/No)
    */
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const { id } = e.target;
     const tasksCopyOriginal = [...tasks];
     const tasksCopy = [...tasks];
@@ -43,36 +39,27 @@ const Tasks = () => {
       status: !selectedTask.status,
     };
     setTasks(tasksCopy);
-    const taskRef = doc(db, 'users', currentUser.uid, 'tasks', id);
-    updateDoc(taskRef, {
-      status: !selectedTask.status,
-    })
-      .then(() => {
-        toast.success(`Task has been updated`);
-      })
-      .catch((err) => {
-        toast.error(err.message);
-        setTasks(tasksCopyOriginal);
-        console.error(err.message);
-      });
+    const taskRef = doc(db, 'users', currentUser?.uid, 'tasks', id);
+    const res = await UpdateDocFn(taskRef, { status: !selectedTask.status });
+    // UI Roll back if Server Failed to update.
+    if (res.status === 'error') {
+      setTasks(tasksCopyOriginal);
+    }
   };
+
   /**
-   *
    * @param {String} taskId Task ID
    * @Fn to delete a Task.
    */
-  const handleDelete = (taskId) => {
+  const handleDelete = async (taskId) => {
     const tasksCopyOriginal = [...tasks];
     const tasksCopy = tasks.filter((t) => t.id !== taskId);
     setTasks(tasksCopy);
-    const tasksRef = doc(db, 'users', currentUser.uid, 'tasks', taskId);
-    deleteDoc(tasksRef)
-      .then(() => toast.success(`Task has been deleted`))
-      .catch((err) => {
-        setTasks(tasksCopyOriginal);
-        toast.error(err.message);
-        console.error(err.message);
-      });
+    const tasksRef = doc(db, 'users', currentUser?.uid, 'tasks', taskId);
+    const res = await DelDocFn(tasksRef);
+    if (res.status === 'error') {
+      setTasks(tasksCopyOriginal);
+    }
   };
 
   return (
