@@ -1,10 +1,9 @@
 import arrowUp from '../../../media/icons/arrow-up2.svg';
 import arrowDown from '../../../media/icons/arrow-down2.svg';
 import { useState } from 'react';
-import useForm from '../../../lib/useForm';
 import './Filter.styles.scss';
-const FilterTasks = ({ tasks, onSort, onFilter }) => {
-  const { inputs, handleChange } = useForm();
+import Input from '../../../common/Input';
+const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
   const [sort, setSort] = useState(true);
   const handleSort = () => {
     onSort(sort);
@@ -12,8 +11,12 @@ const FilterTasks = ({ tasks, onSort, onFilter }) => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log({ inputs });
     onFilter(inputs);
+  };
+
+  const handleReset = () => {
+    onReset();
+    onFilter(inputs, true);
   };
   return (
     <>
@@ -26,17 +29,19 @@ const FilterTasks = ({ tasks, onSort, onFilter }) => {
               <label className="filter__form__label">Status: </label>
               <input
                 className="filter__form_input"
-                onChange={handleChange}
+                onChange={onChange}
                 name="status"
                 type="radio"
+                checked={inputs?.status === 'true'}
                 value={true}
               />
               <label htmlFor="done">Completed</label>
               <input
                 className="filter__form_input"
-                onChange={handleChange}
+                onChange={onChange}
                 name="status"
                 type="radio"
+                checked={inputs?.status === 'false'}
                 value={false}
               />
               <label htmlFor="pending">Pending</label>
@@ -46,28 +51,31 @@ const FilterTasks = ({ tasks, onSort, onFilter }) => {
               <label className="filter__form__label">Priority: </label>
               <input
                 className="filter__form_input"
-                onChange={handleChange}
+                onChange={onChange}
                 name="priority"
                 type="radio"
                 value="High"
+                checked={inputs?.priority === 'High'}
                 id="high"
               />
               <label htmlFor="high">High</label>
               <input
                 className="filter__form_input"
-                onChange={handleChange}
+                onChange={onChange}
                 name="priority"
                 type="radio"
                 value="Medium"
+                checked={inputs?.priority === 'Medium'}
                 id="medium"
               />
               <label htmlFor="medium">Medium</label>
               <input
                 className="filter__form_input"
-                onChange={handleChange}
+                onChange={onChange}
                 name="priority"
                 type="radio"
                 value="Low"
+                checked={inputs?.priority === 'Low'}
                 id="low"
               />
               <label htmlFor="low">Low</label>
@@ -76,7 +84,13 @@ const FilterTasks = ({ tasks, onSort, onFilter }) => {
             <label className="filter__form__label" htmlFor="date">
               Filter by certain date:{' '}
             </label>
-            <input onChange={handleChange} type="date" name="date" id="date" />
+            <input
+              onChange={onChange}
+              type="date"
+              name="date"
+              id="date"
+              value={inputs?.date}
+            />
             <br />
             <div className="filter__form__submit-container">
               <button
@@ -84,11 +98,29 @@ const FilterTasks = ({ tasks, onSort, onFilter }) => {
                 type="submit"
                 value="Submit"
               >
-                Submit
+                Filter
+              </button>
+
+              <button
+                className="form__btn filter__form__submit"
+                type="button"
+                value="reset"
+                onClick={handleReset}
+              >
+                Reset
               </button>
             </div>
           </fieldset>
         </form>
+        <Input
+          label="Search"
+          placeholder="Search by task title"
+          type="text"
+          name="search"
+          id="search"
+          value={inputs.search}
+          onChange={onChange}
+        />
         <div className="filter__form__sortByDate">
           <span>Sort by due date: </span>
           <button

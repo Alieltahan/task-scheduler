@@ -8,10 +8,17 @@ import { Link } from 'react-router-dom';
 import { DelDocFn, UpdateDocFn } from '../../common/CRUD-Firebase';
 import FilterTasks from './Filter/Filter';
 import { dateToNumber, dateToString } from '../../lib/timeFormating';
+import useForm from '../../lib/useForm';
 
 const Tasks = () => {
   const { currentUser } = auth;
   const [tasks, setTasks] = useState([]);
+  const { inputs, handleChange, resetForm } = useForm({
+    date: '',
+    priority: '',
+    status: '',
+    search: '',
+  });
   useEffect(() => {
     const tasksRef = collection(db, 'users', currentUser?.uid, 'tasks');
     // Real time database query which gets updated once any change happens to the Tasks Collection.
@@ -30,7 +37,7 @@ const Tasks = () => {
    * @param {Event} e Input Checkbox event
    * function to update Tasks Status (Completed: Yes/No)
    */
-  const handleChange = async (e) => {
+  const handleChangeStatus = async (e) => {
     const { id } = e.target;
     const tasksCopyOriginal = [...tasks];
     const tasksCopy = [...tasks];
@@ -64,25 +71,29 @@ const Tasks = () => {
       setTasks(tasksCopyOriginal);
     }
   };
-
-  const handleFilter = (inputs) => {
+  let filteredTasks = [...tasks];
+  const handleFilter = (inputs, reset) => {
     const { status, priority, date } = inputs;
-    console.log(inputs);
-    let tasksCopy = [...tasks];
+
+    if (reset) return (filteredTasks = [...tasks]);
     if (date) {
-      tasksCopy = tasksCopy.filter((t) => {
+      filteredTasks = filteredTasks.filter((t) => {
         return dateToNumber(t.dueDate) === dateToNumber(date);
       });
     }
     if (status) {
-      tasksCopy = tasksCopy.filter((t) => String(t.status) === status);
+      filteredTasks = filteredTasks.filter((t) => String(t.status) === status);
     }
     if (priority) {
-      tasksCopy = tasksCopy.filter((t) => t.priority === priority);
+      filteredTasks = filteredTasks.filter((t) => t.priority === priority);
     }
-    console.log(tasksCopy);
-    setTasks(tasksCopy);
+    return filteredTasks;
   };
+  filteredTasks =
+    inputs.status || inputs.priority || inputs.date
+      ? handleFilter(inputs)
+      : [...tasks];
+
   const handleSorting = (order) => {
     const tasksCopy = [...tasks];
     tasksCopy.sort((a, b) => {
@@ -92,13 +103,18 @@ const Tasks = () => {
     });
     setTasks(tasksCopy);
   };
-
+  const handleReset = () => {
+    resetForm();
+    handleFilter(inputs, true);
+  };
   return (
     <>
       <FilterTasks
-        tasks={tasks}
         onSort={handleSorting}
         onFilter={handleFilter}
+        onReset={handleReset}
+        inputs={inputs}
+        onChange={handleChange}
       />
       <TasksContainer>
         <table>
@@ -115,7 +131,7 @@ const Tasks = () => {
             </tr>
           </thead>
           <tbody>
-            {tasks.map((task) => {
+            {filteredTasks?.map((task) => {
               return (
                 <tr key={task.id}>
                   <td> {task.title}</td>
@@ -127,7 +143,7 @@ const Tasks = () => {
                       <input
                         type="checkbox"
                         checked={!task.status}
-                        onChange={handleChange}
+                        onChange={handleChangeStatus}
                         className="checkbox"
                         id={task.id}
                       />
