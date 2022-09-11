@@ -1,15 +1,26 @@
-import { addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, deleteDoc, getDocs, updateDoc } from 'firebase/firestore';
 import toast from 'react-hot-toast';
 
 /**
- *
+ * @param {Path} objRef Path to the desired collection
+ * @returns Collection of docs
+ */
+export const getDocsFn = async (objRef) => {
+  try {
+    return await getDocs(objRef);
+  } catch (err) {
+    toast.error(err.message);
+  }
+};
+
+/**
  * @param {PathRef} tasksRef Path
  * @param {*} taskObj
  * @returns
  */
-export const addDocFn = async (tasksRef, taskObj) => {
+export const addDocFn = async (objRef, taskObj) => {
   try {
-    await addDoc(tasksRef, taskObj);
+    await addDoc(objRef, taskObj);
     toast.success(`Task has been added`);
     return { status: 'success' };
   } catch (err) {
@@ -19,12 +30,12 @@ export const addDocFn = async (tasksRef, taskObj) => {
 };
 
 /**
- * @param {Path} tasksRef Path To The Doc Ref
+ * @param {Path} objRef Path To The Doc Ref
  * @returns Object.status & Object.msg
  */
-export const DelDocFn = async (tasksRef) => {
+export const DelDocFn = async (objRef) => {
   try {
-    await deleteDoc(tasksRef);
+    await deleteDoc(objRef);
     toast.success(`Task has been deleted`);
     return { status: 'success' };
   } catch (err) {
@@ -34,13 +45,13 @@ export const DelDocFn = async (tasksRef) => {
 };
 
 /**
- * @param {PathRef} taskRef Path To The Doc Ref
+ * @param {PathRef} objRef Path To The Doc Ref
  * @param {Object} updateObj an object to be updated
  * @returns Object.status & Object.msg
  */
-export const UpdateDocFn = async (taskRef, updateObj) => {
+export const UpdateDocFn = async (objRef, updateObj) => {
   try {
-    await updateDoc(taskRef, updateObj);
+    await updateDoc(objRef, updateObj);
     toast.success(`Doc had been updated`);
     return { status: 'success' };
   } catch (err) {
