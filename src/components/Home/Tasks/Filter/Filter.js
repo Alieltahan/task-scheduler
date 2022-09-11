@@ -2,7 +2,7 @@ import arrowUp from '../../../media/icons/arrow-up2.svg';
 import arrowDown from '../../../media/icons/arrow-down2.svg';
 import { useState } from 'react';
 import './Filter.styles.scss';
-import Input from '../../../common/Input';
+import SearchInput from './SearchInput/SearchInput';
 const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
   const [sort, setSort] = useState(true);
   const handleSort = () => {
@@ -82,7 +82,7 @@ const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
             </div>
             {/* Filter by Certain Date*/}
             <label className="filter__form__label" htmlFor="date">
-              Filter by certain date:{' '}
+              Certain date:{' '}
             </label>
             <input
               onChange={onChange}
@@ -92,15 +92,10 @@ const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
               value={inputs?.date}
             />
             <br />
-            <div className="filter__form__submit-container">
-              <button
-                className="form__btn filter__form__submit"
-                type="submit"
-                value="Submit"
-              >
-                Filter
-              </button>
+            <br />
+            <SearchInput onChange={onChange} input={inputs.search} />
 
+            <div className="filter__form__submit-container">
               <button
                 className="form__btn filter__form__submit"
                 type="button"
@@ -112,15 +107,7 @@ const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
             </div>
           </fieldset>
         </form>
-        <Input
-          label="Search"
-          placeholder="Search by task title"
-          type="text"
-          name="search"
-          id="search"
-          value={inputs.search}
-          onChange={onChange}
-        />
+
         <div className="filter__form__sortByDate">
           <span>Sort by due date: </span>
           <button
