@@ -1,6 +1,14 @@
 import './Input.module.styles.scss';
 
-const Input = ({ label, name, type, value, onChange, required }) => {
+const Input = ({
+  label,
+  name,
+  type,
+  value,
+  onChange,
+  required,
+  placeholder,
+}) => {
   return (
     <div className="form__group">
       <input
@@ -13,6 +21,8 @@ const Input = ({ label, name, type, value, onChange, required }) => {
         placeholder={
           name === 'lastName' || name === 'description'
             ? `${label} (optional)`
+            : name === 'search'
+            ? `${placeholder}`
             : `${label}`
         }
         required={required}
