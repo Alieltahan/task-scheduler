@@ -14,17 +14,24 @@ const Navbar = () => {
         toast.error(`Error while signing out!`);
       });
   };
+  const { currentUser } = auth;
   return (
     <NavbarContainer>
-      <NavLink to={`/signin`}>
-        <div className="button"> Sign In</div>
-      </NavLink>
-      <NavLink to={`/signup`}>
-        <div className="button"> Sign Up</div>
-      </NavLink>
-      <div onClick={handleSignOut}>
-        <div className="button"> Sign out</div>
-      </div>
+      {!currentUser && (
+        <NavLink to={`/signin`}>
+          <div className="button"> Sign In</div>
+        </NavLink>
+      )}
+      {!currentUser && (
+        <NavLink to={`/signup`}>
+          <div className="button"> Sign Up</div>
+        </NavLink>
+      )}
+      {currentUser && (
+        <div onClick={handleSignOut}>
+          <div className="button"> Sign out</div>
+        </div>
+      )}
     </NavbarContainer>
   );
 };
