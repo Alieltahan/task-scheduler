@@ -19,6 +19,7 @@ const Tasks = () => {
     status: '',
     search: '',
   });
+
   useEffect(() => {
     const tasksRef = collection(db, 'users', currentUser?.uid, 'tasks');
     // Real time database query which gets updated once any change happens to the Tasks Collection.
@@ -89,9 +90,20 @@ const Tasks = () => {
     }
     return filteredTasks;
   };
+  const handleSearch = (input) => {
+    if (!input.length) return;
+    return (filteredTasks = filteredTasks.filter((t) =>
+      `${t.title.toLowerCase()}`.includes(input.toLowerCase())
+    ));
+  };
+  const handleFilterSearch = () => {
+    handleSearch(inputs.search);
+    handleFilter(inputs);
+    return filteredTasks;
+  };
   filteredTasks =
-    inputs.status || inputs.priority || inputs.date
-      ? handleFilter(inputs)
+    inputs.status || inputs.priority || inputs.date || inputs.search.length
+      ? handleFilterSearch()
       : [...tasks];
 
   const handleSorting = (order) => {
@@ -107,6 +119,7 @@ const Tasks = () => {
     resetForm();
     handleFilter(inputs, true);
   };
+
   return (
     <>
       <FilterTasks
@@ -115,7 +128,9 @@ const Tasks = () => {
         onReset={handleReset}
         inputs={inputs}
         onChange={handleChange}
+        onSearch={handleSearch}
       />
+
       <TasksContainer>
         <table>
           <thead>
