@@ -5,11 +5,15 @@ export default function useForm(initial = {}) {
   const [inputs, setInputs] = useState(initial);
 
   function handleChange(e) {
-    let { value, name, type } = e.target;
+    let { value, name, type, id } = e.target;
+    // console.log({ value, name, type, id });
     // CheckBox special value for Boolean
     if (type === 'checkbox') {
       value = !inputs.status;
     }
+    // if (type === 'radio') {
+    //   value = id;
+    // }
     setInputs((prevState) => ({
       // copy the existing state
       ...prevState,
