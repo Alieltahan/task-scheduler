@@ -28,7 +28,7 @@ const Navbar = () => {
         </NavLink>
       )}
       {currentUser && (
-        <div onClick={handleSignOut}>
+        <div>
           <div className="button"> {currentUser.displayName}</div>
         </div>
       )}
