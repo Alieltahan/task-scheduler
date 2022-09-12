@@ -5,8 +5,7 @@ export default function useForm(initial = {}) {
   const [inputs, setInputs] = useState(initial);
 
   function handleChange(e) {
-    let { value, name, type, id } = e.target;
-    // console.log({ value, name, type, id });
+    let { value, name, type } = e.target;
     // CheckBox special value for Boolean
     if (type === 'checkbox') {
       value = !inputs.status;
