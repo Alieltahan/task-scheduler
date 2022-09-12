@@ -30,7 +30,12 @@ function App() {
             userLoggedIn ? <HomePage /> : <Navigate to="/signin" replace />
           }
         />
-        <Route path="/task/:id" element={<EditTaskPage />} />
+        <Route
+          path="/task/:id"
+          element={
+            !userLoggedIn ? <Navigate to="/signin" replace /> : <EditTaskPage />
+          }
+        />
         <Route
           path="/signin"
           element={

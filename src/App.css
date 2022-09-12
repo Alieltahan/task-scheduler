@@ -2,7 +2,7 @@
   --color-font-primary: #000;
   --color-font-secondary: rgb(27, 38, 133);
   --color-white: #fff;
-  --color-hover-bg: #cccccc3b;
+  --color-hover-bg: #745e5e3b;
   --font-size-primary: 2rem;
   --font-size-secondary: 1.8rem;
   --font-size-header: 3rem;
@@ -24,7 +24,7 @@ a.active {
 .App {
   text-align: center;
   /* Navbar Height */
-  padding-top: 64px;
+  padding-top: 10rem;
 }
 
 .App-logo {
