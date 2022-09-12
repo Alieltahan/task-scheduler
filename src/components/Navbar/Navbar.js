@@ -29,6 +29,11 @@ const Navbar = () => {
       )}
       {currentUser && (
         <div onClick={handleSignOut}>
+          <div className="button"> {currentUser.displayName}</div>
+        </div>
+      )}
+      {currentUser && (
+        <div onClick={handleSignOut}>
           <div className="button"> Sign out</div>
         </div>
       )}

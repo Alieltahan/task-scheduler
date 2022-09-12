@@ -5,14 +5,17 @@ const NavbarContainer = styled.div`
   font-size: 1.8rem;
   top: 0;
   left: 0;
-  /* background-color: ; */
+  background: linear-gradient(
+    50deg,
+    rgba(2, 0, 36, 1) 0%,
+    rgba(9, 9, 121, 1) 35%,
+    rgba(0, 212, 255, 1) 100%
+  );
   display: flex;
   width: 100%;
   justify-content: flex-end;
   margin-right: 2rem;
   color: var(--color-font-primary);
-
-  /* Classes for Active Links */
 
   & .button {
     padding: 2rem 1rem;
