@@ -8,6 +8,10 @@ export const TasksContainer = styled.div`
     margin: auto;
     font-size: 1.5rem;
     max-width: 104rem;
+    /* Hide big table @ 900px */
+    @media screen and (max-width: 900px) {
+      display: none;
+    }
   }
 
   td,
@@ -66,11 +70,18 @@ export const TasksContainer = styled.div`
   .button {
     position: relative;
     top: 50%;
+
     width: 74px;
     height: 36px;
     margin: auto;
     margin-top: 1rem;
     overflow: hidden;
+    @media screen and (max-width: 900px) {
+      top: 0%;
+      margin: 0;
+      height: 32px;
+      width: 54px;
+    }
   }
 
   .button.r,
@@ -121,6 +132,11 @@ export const TasksContainer = styled.div`
     background-color: #03a9f4;
     border-radius: 50%;
     transition: 0.3s ease all;
+    @media screen and (max-width: 900px) {
+      top: 3px;
+      left: 3px;
+      height: 9px;
+    }
   }
 
   #button-2 .knobs:before {
@@ -156,5 +172,48 @@ export const TasksContainer = styled.div`
   .edit_icon {
     width: 2rem;
     height: 2rem;
+  }
+  /* Styling for Small Screens */
+  @media screen and (max-width: 900px) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 2rem;
+    margin: 1rem;
+  }
+  .container__small {
+    background-color: #ccc;
+    padding: 1rem;
+    border-radius: 3rem;
+    font-size: 1rem;
+    display: none;
+    /* Show Task Cards on 900px */
+    @media screen and (max-width: 900px) {
+      display: block;
+    }
+  }
+  .card {
+    &__label {
+      font-size: 1.3rem;
+      margin-right: 1rem;
+      font-weight: 700;
+    }
+    &__status {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem 0;
+    }
+    &__value {
+      font-size: 1.5rem;
+    }
+    &__edit-del {
+      display: flex;
+      justify-content: space-between;
+      margin: 1rem;
+    }
+    &__icon-label {
+      display: flex;
+      align-items: center;
+    }
   }
 `;

@@ -18,8 +18,16 @@ a:visited {
 /* Classes for Active Links */
 a.active {
   color: var(--color-white);
-  background-color: wheat;
   border-radius: 10px;
+  position: relative;
+}
+a.active::before {
+  content: '';
+  border-bottom: 2px solid orangered;
+  position: absolute;
+  top: 5.8rem;
+  left: 0;
+  width: 100%;
 }
 .App {
   text-align: center;
