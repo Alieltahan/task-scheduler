@@ -3,7 +3,14 @@ import arrowDown from '../../../media/icons/arrow-down2.svg';
 import { useState } from 'react';
 import './Filter.styles.scss';
 import SearchInput from './SearchInput/SearchInput';
-const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
+const FilterTasks = ({
+  onSort,
+  onFilter,
+  onReset,
+  inputs,
+  onChange,
+  onSearch,
+}) => {
   const [sort, setSort] = useState(true);
   const handleSort = () => {
     onSort(sort);
@@ -36,15 +43,17 @@ const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
                 value={true}
               />
               <label htmlFor="done">Completed</label>
-              <input
-                className="filter__form_input"
-                onChange={onChange}
-                name="status"
-                type="radio"
-                checked={inputs?.status === 'false'}
-                value={false}
-              />
-              <label htmlFor="pending">Pending</label>
+              <span>
+                <input
+                  className="filter__form_input"
+                  onChange={onChange}
+                  name="status"
+                  type="radio"
+                  checked={inputs?.status === 'false'}
+                  value={false}
+                />
+                <label htmlFor="pending">Pending</label>
+              </span>
             </div>
             {/* Priority radio filter */}
             <div>
@@ -93,7 +102,7 @@ const FilterTasks = ({ onSort, onFilter, onReset, inputs, onChange }) => {
             />
             <br />
             <br />
-            <SearchInput onChange={onChange} input={inputs.search} />
+            <SearchInput onSearch={onSearch} />
 
             <div className="filter__form__submit-container">
               <button

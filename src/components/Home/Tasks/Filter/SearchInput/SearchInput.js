@@ -1,9 +1,27 @@
+import { useState } from 'react';
+import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const InputSearch = styled.input`
   border-radius: 30px;
 `;
-const SearchInput = ({ onChange, input }) => {
+const SearchInput = ({ onSearch }) => {
+  const [searchInput, setSearchInput] = useState('');
+
+  useEffect(() => {
+    const searchTimer = setTimeout(() => {
+      onSearch(searchInput);
+    }, 100);
+    return () => {
+      clearTimeout(searchTimer);
+    };
+  }, [searchInput, onSearch]);
+
+  const handleChange = (e) => {
+    const { value } = e.target;
+    setSearchInput(value);
+  };
+
   return (
     <>
       <label className="filter__form__label">Search: </label>
@@ -13,8 +31,8 @@ const SearchInput = ({ onChange, input }) => {
         type="text"
         name="search"
         id="search"
-        value={input}
-        onChange={onChange}
+        value={searchInput}
+        onChange={handleChange}
       />
     </>
   );
