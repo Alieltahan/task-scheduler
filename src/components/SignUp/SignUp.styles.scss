@@ -20,6 +20,9 @@
   }
   &__select > select {
     width: 41%;
+    @media screen and (max-width: 500px) {
+      width: 70%;
+    }
   }
 
   &__input {
@@ -34,6 +37,9 @@
     padding: 1rem 1.5rem;
     border-bottom: 3px solid transparent;
     transition: all 0.3s;
+    @media screen and (max-width: 500px) {
+      width: 60%;
+    }
     &:focus {
       outline: none;
       border-bottom: 3px solid green;
@@ -59,6 +65,9 @@
     transform: translateY(-7.5rem);
     width: 35%;
     text-align: left;
+    @media screen and (max-width: 500px) {
+      width: 60%;
+    }
   }
   &__label.textarea {
     transform: translateY(-13.2rem);

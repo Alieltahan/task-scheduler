@@ -1,8 +1,16 @@
 import styled from 'styled-components';
 
 export const ToggleContainer = styled.div`
+  /* margin: auto; */
   margin-bottom: 2rem;
   width: 70%;
+  @media screen and (max-width: 500px) {
+    width: 50%;
+  }
+  .form__label-check {
+    font-size: 1.2rem;
+    font-weight: 700;
+  }
   .toggle-button-cover {
     display: table-cell;
     position: relative;
