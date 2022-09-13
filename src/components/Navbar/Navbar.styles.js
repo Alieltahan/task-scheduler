@@ -16,6 +16,7 @@ const NavbarContainer = styled.div`
   justify-content: flex-end;
   margin-right: 2rem;
   color: var(--color-font-primary);
+  z-index: 10;
 
   & .button {
     padding: 2rem 1rem;

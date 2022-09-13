@@ -25,7 +25,6 @@ const Signin = () => {
       );
       toast.success(`Login success`);
       resetForm();
-      console.log(user);
       if (user) navigate('/home');
     } catch (err) {
       console.error(`Error: Sign in --->`, err.message);

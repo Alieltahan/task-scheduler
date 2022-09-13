@@ -1,5 +1,13 @@
 .form {
-  padding-left: 3rem;
+  background-color: #ccc;
+  width: 50vw;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px,
+    rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+  margin: auto;
+  margin-bottom: 3rem;
+  @media screen and (max-width: 700px) {
+    width: 80vw;
+  }
   &__group {
     display: flex;
     justify-items: center;
@@ -9,6 +17,9 @@
   }
   &__group:not(:last-child) {
     margin-bottom: 0.8rem;
+  }
+  &__select > select {
+    width: 41%;
   }
 
   &__input {
@@ -103,10 +114,9 @@
       opacity: 0.5;
     }
     &::before {
-      margin: auto;
+      margin: 0rem 0rem 4rem 0rem;
       display: flex;
-      width: 40%;
-      margin-bottom: 4rem;
+      width: 100%;
       height: 10px;
       content: '';
       background-image: linear-gradient(

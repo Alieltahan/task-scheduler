@@ -2,6 +2,9 @@
   &__container {
     width: 70%;
     margin: auto;
+    @media screen and (max-width: 500px) {
+      width: 90%;
+    }
   }
   &__form {
     font-size: 1.5rem;
@@ -22,7 +25,11 @@
       width: 100%;
       text-align: end;
     }
-
+    &__row {
+      display: flex;
+      align-items: center;
+      row-gap: 2rem;
+    }
     &__img {
       &-bg {
         font-size: 1.5rem;

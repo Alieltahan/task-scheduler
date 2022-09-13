@@ -1,6 +1,6 @@
 import Input from '../common/Input';
 import useForm from '../lib/useForm';
-import './SignUp.module.styles.scss';
+import './SignUp.styles.scss';
 import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../Firebase';
 import { useState } from 'react';

@@ -1,14 +1,16 @@
 import { signOut } from 'firebase/auth';
 import toast from 'react-hot-toast';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { auth } from '../../Firebase';
 import { NavbarContainer } from './Navbar.styles';
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         toast.success(`SignOut Completed!`);
+        navigate('/');
       })
       .catch(() => {
         toast.error(`Error while signing out!`);
