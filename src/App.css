@@ -7,7 +7,14 @@
   --font-size-secondary: 1.8rem;
   --font-size-header: 3rem;
   --font-size-paragraph: 1.5rem;
+}
+html {
   font-size: 62.5%;
+}
+@media screen and (max-width: 500px) {
+  html {
+    font-size: 55%;
+  }
 }
 a {
   text-decoration: none;
