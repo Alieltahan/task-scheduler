@@ -9,15 +9,17 @@ import { DelDocFn, UpdateDocFn } from '../../common/CRUD-Firebase';
 import FilterTasks from './Filter/Filter';
 import { dateToNumber, dateToString } from '../../lib/timeFormating';
 import useForm from '../../lib/useForm';
+import Loader from '../../Loader/loader';
+import SearchInput from './SearchInput/SearchInput';
 
 const Tasks = () => {
   const { currentUser } = auth;
   const [tasks, setTasks] = useState([]);
+  const [searchInput, setSearchInput] = useState('');
   const { inputs, handleChange, resetForm } = useForm({
     date: '',
     priority: '',
     status: '',
-    search: '',
   });
 
   useEffect(() => {
@@ -49,6 +51,7 @@ const Tasks = () => {
       ...selectedTask,
       status: !selectedTask.status,
     };
+    // Optimistic update for Tasks
     setTasks(tasksCopy);
     const taskRef = doc(db, 'users', currentUser?.uid, 'tasks', id);
     const res = await UpdateDocFn(taskRef, { status: !selectedTask.status });
@@ -65,18 +68,27 @@ const Tasks = () => {
   const handleDelete = async (taskId) => {
     const tasksCopyOriginal = [...tasks];
     const tasksCopy = tasks.filter((t) => t.id !== taskId);
+    // Optimistic update for Tasks
     setTasks(tasksCopy);
     const tasksRef = doc(db, 'users', currentUser?.uid, 'tasks', taskId);
     const res = await DelDocFn(tasksRef);
+    // UI Roll back if Server Failed to update.
     if (res.status === 'error') {
       setTasks(tasksCopyOriginal);
     }
   };
-  let filteredTasks = [...tasks];
-  const handleFilter = (inputs, reset) => {
-    const { status, priority, date } = inputs;
 
-    if (reset) return (filteredTasks = [...tasks]);
+  let filteredTasks = [...tasks];
+
+  /**
+   * @param {Object} inputs
+   * @param {String} inputs.status
+   * @param {String} inputs.priority
+   * @param {Date} inputs.date
+   * @returns Array of Filtered Tasks based on inputs.
+   */
+  const handleFilter = (inputs) => {
+    const { status, priority, date } = inputs;
     if (date) {
       filteredTasks = filteredTasks.filter((t) => {
         return dateToNumber(t.dueDate) === dateToNumber(date);
@@ -90,22 +102,31 @@ const Tasks = () => {
     }
     return filteredTasks;
   };
+
+  /**
+   * @param {String} input user Input
+   * @returns update searchInput state.
+   */
   const handleSearch = (input) => {
-    if (!input.length) return;
-    return (filteredTasks = filteredTasks.filter((t) =>
-      `${t.title.toLowerCase()}`.includes(input.toLowerCase())
-    ));
+    setSearchInput(input);
   };
-  const handleFilterSearch = () => {
-    handleSearch(inputs.search);
-    handleFilter(inputs);
-    return filteredTasks;
-  };
+  // Filtering the tasks based on filter inputs
   filteredTasks =
-    inputs.status || inputs.priority || inputs.date || inputs.search.length
-      ? handleFilterSearch()
+    inputs.status || inputs.priority || inputs.date
+      ? handleFilter(inputs)
       : [...tasks];
 
+  // If there is search input, reset the filter inpust & update the tasks list.
+  if (searchInput?.length > 0) {
+    if (inputs.status || inputs.priority || inputs.date) resetForm();
+    filteredTasks = filteredTasks.filter((t) =>
+      `${t.title.toLowerCase()}`.includes(searchInput.toLowerCase())
+    );
+  }
+  /**
+   * @param {Boolean} order true/false
+   * @returns asecnding / descending tasks based on Due date
+   */
   const handleSorting = (order) => {
     const tasksCopy = [...tasks];
     tasksCopy.sort((a, b) => {
@@ -115,22 +136,18 @@ const Tasks = () => {
     });
     setTasks(tasksCopy);
   };
+  /**
+   * @Fn to reset the filter form.
+   */
   const handleReset = () => {
     resetForm();
-    handleFilter(inputs, true);
+    setSearchInput('');
   };
-
-  return (
-    <>
-      <FilterTasks
-        onSort={handleSorting}
-        onFilter={handleFilter}
-        onReset={handleReset}
-        inputs={inputs}
-        onChange={handleChange}
-        onSearch={handleSearch}
-      />
-
+  /**
+   * @returns Table of tasks
+   */
+  let renderTasks = () => {
+    return (
       <TasksContainer>
         <table>
           <thead>
@@ -138,8 +155,8 @@ const Tasks = () => {
               <th>Title</th>
               <th>Description</th>
               <th>Priority</th>
-              <th>Status</th>
-              <th>Added date</th>
+              <th>Completed</th>
+              <th>Created on</th>
               <th>Due date</th>
               <th></th>
               <th></th>
@@ -150,10 +167,9 @@ const Tasks = () => {
               return (
                 <tr key={task.id}>
                   <td> {task.title}</td>
-                  <td>{task.description}</td>
+                  <td>{task.description === '' ? '-' : task.description}</td>
                   <td>{task.priority}</td>
                   <td>
-                    Completed:
                     <div className="button r" id="button-2">
                       <input
                         type="checkbox"
@@ -166,9 +182,7 @@ const Tasks = () => {
                       <div className="layer"></div>
                     </div>
                   </td>
-                  <td>
-                    {new Date(task.addedDate.seconds * 1000).toDateString()}
-                  </td>
+                  <td>{dateToString(task.addedDate.seconds * 1000)}</td>
                   <td>{dateToString(task.dueDate)}</td>
                   <td>
                     <Link to={`/task/${task.id}`}>
@@ -189,6 +203,117 @@ const Tasks = () => {
           </tbody>
         </table>
       </TasksContainer>
+    );
+  };
+  if (tasks.length === 0) {
+    renderTasks = () => {
+      return <h1>There is no tasks added yet. Start now!</h1>;
+    };
+  }
+  // Conditional rendering if there is no result for search/filter tasks.
+
+  if (filteredTasks.length === 0 && tasks.length > 0) {
+    renderTasks = () => {
+      return <h1>There is no result for the filter/search criteria</h1>;
+    };
+  }
+  /**
+   * @returns Card of Tasks for Small Screen
+   */
+  const renderTasksAsCards = () => {
+    return (
+      <TasksContainer>
+        {filteredTasks.map((task) => {
+          return (
+            <div className="container__small" key={task.id}>
+              <h1>
+                <span className="card__label">Title:</span>
+                {task.title}
+              </h1>
+              <div className="card__value">
+                <span className="card__label">Description:</span>
+                {task.description === '' ? '-' : task.description}
+              </div>
+              <div className="card__value">
+                <span className="card__label">Priority:</span>
+                {task.priority}
+              </div>
+              <div className="card__status">
+                <span className="card__label">Completed:</span>
+                <div className="button r" id="button-2">
+                  <input
+                    type="checkbox"
+                    checked={!task.status}
+                    onChange={handleChangeStatus}
+                    className="checkbox"
+                    id={task.id}
+                  />
+                  <div className="knobs"></div>
+                  <div className="layer"></div>
+                </div>
+              </div>
+
+              <div className="card__value">
+                <span className="card__label"> Created on: </span>
+                {dateToString(task.addedDate.seconds * 1000)}
+              </div>
+              <div className="card__value">
+                <span className="card__label">Due date:</span>
+                {dateToString(task.dueDate)}
+              </div>
+              <div className="card__edit-del">
+                <div className="card__icon-label">
+                  <span className="card__label"> Edit: </span>
+                  <Link to={`/task/${task.id}`}>
+                    <img className="edit_icon" src={editIcon} alt="edit" />
+                  </Link>
+                </div>
+                <div className="card__icon-label">
+                  <span className="card__label"> Delete: </span>
+                  <img
+                    onClick={() => handleDelete(task.id)}
+                    className="delete_icon"
+                    src={deleteIcon}
+                    alt="delete"
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </TasksContainer>
+    );
+  };
+
+  const handleSearchLocal = (e) => {
+    setSearchInput(e.target.value);
+  };
+
+  return (
+    <>
+      <FilterTasks
+        onSort={handleSorting}
+        onFilter={handleFilter}
+        onReset={handleReset}
+        inputs={inputs}
+        onChange={handleChange}
+        // onSearch={handleSearch}
+        searchInput={searchInput}
+      />
+      <SearchInput onInput={searchInput} onSearch={handleSearch} />
+      {/* <label className="filter__form__label">Search: </label>
+      <input
+        label="Search"
+        placeholder="Search by task title"
+        type="text"
+        name="search"
+        id="search"
+        value={searchInput}
+        onChange={handleSearchLocal}
+        style={{ borderRadius: '30px' }}
+      /> */}
+      {renderTasks()}
+      {renderTasksAsCards()}
     </>
   );
 };
