@@ -1,5 +1,3 @@
-import './Input.module.styles.scss';
-
 const Input = ({
   label,
   name,
