@@ -1,5 +1,3 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
 import styled from 'styled-components';
 
 const SearchContainer = styled.div`
@@ -17,33 +15,17 @@ const SearchContainer = styled.div`
   }
 `;
 
-const SearchInput = ({ onSearch, searchInput }) => {
-  const [userInput, setUserInput] = useState('');
-
-  useEffect(() => {
-    // Debounce
-    const searchTimer = setTimeout(() => {
-      // Condition to avoid double rendering.
-      if (userInput !== searchInput) {
-        onSearch(userInput);
-      }
-    }, 300);
-    return () => {
-      clearTimeout(searchTimer);
-    };
-  }, [onSearch, searchInput, userInput]);
-
+const SearchInput = ({ onSearch, onInput }) => {
   return (
     <SearchContainer>
-      {/* <label className="search__label">Search: </label> */}
       <input
         className="search__input"
         placeholder="Search by task title"
         type="text"
         name="search"
         id="search"
-        value={userInput}
-        onChange={(e) => setUserInput(e.target.value)}
+        value={onInput}
+        onChange={(e) => onSearch(e.target.value)}
         style={{ borderRadius: '30px' }}
       />
     </SearchContainer>

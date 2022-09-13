@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const TasksContainer = styled.div`
+  margin-bottom: 15rem;
   table {
     font-family: arial, sans-serif;
     border-collapse: collapse;

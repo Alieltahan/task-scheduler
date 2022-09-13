@@ -9,7 +9,6 @@ import { DelDocFn, UpdateDocFn } from '../../common/CRUD-Firebase';
 import FilterTasks from './Filter/Filter';
 import { dateToNumber, dateToString } from '../../lib/timeFormating';
 import useForm from '../../lib/useForm';
-import Loader from '../../Loader/loader';
 import SearchInput from './SearchInput/SearchInput';
 
 const Tasks = () => {
@@ -137,12 +136,13 @@ const Tasks = () => {
     setTasks(tasksCopy);
   };
   /**
-   * @Fn to reset the filter form.
+   * @Fn to reset the filter form & search input.
    */
   const handleReset = () => {
     resetForm();
     setSearchInput('');
   };
+
   /**
    * @returns Table of tasks
    */
@@ -205,17 +205,17 @@ const Tasks = () => {
       </TasksContainer>
     );
   };
-  if (tasks.length === 0) {
-    renderTasks = () => {
-      return <h1>There is no tasks added yet. Start now!</h1>;
-    };
-  }
-  // Conditional rendering if there is no result for search/filter tasks.
 
+  // If no tasks added yet.
+  if (tasks.length === 0) {
+    renderTasks = () => <h1>There is no tasks added yet. Start now!</h1>;
+  }
+
+  // Conditional rendering if there is no result for search/filter tasks.
   if (filteredTasks.length === 0 && tasks.length > 0) {
-    renderTasks = () => {
-      return <h1>There is no result for the filter/search criteria</h1>;
-    };
+    renderTasks = () => (
+      <h1>There is no result for the filter/search criteria</h1>
+    );
   }
   /**
    * @returns Card of Tasks for Small Screen
@@ -285,8 +285,12 @@ const Tasks = () => {
     );
   };
 
-  const handleSearchLocal = (e) => {
-    setSearchInput(e.target.value);
+  /**
+   * @param {Event} e getting the event of Filter form to change Inputs values
+   */
+  const handleFilterChange = (e) => {
+    if (searchInput.length > 0) setSearchInput('');
+    handleChange(e);
   };
 
   return (
@@ -296,22 +300,10 @@ const Tasks = () => {
         onFilter={handleFilter}
         onReset={handleReset}
         inputs={inputs}
-        onChange={handleChange}
-        // onSearch={handleSearch}
-        searchInput={searchInput}
+        onChange={handleFilterChange}
       />
       <SearchInput onInput={searchInput} onSearch={handleSearch} />
-      {/* <label className="filter__form__label">Search: </label>
-      <input
-        label="Search"
-        placeholder="Search by task title"
-        type="text"
-        name="search"
-        id="search"
-        value={searchInput}
-        onChange={handleSearchLocal}
-        style={{ borderRadius: '30px' }}
-      /> */}
+
       {renderTasks()}
       {renderTasksAsCards()}
     </>
