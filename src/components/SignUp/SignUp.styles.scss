@@ -19,7 +19,10 @@
     margin-bottom: 0.8rem;
   }
   &__select > select {
-    width: 41%;
+    width: 38%;
+    @media screen and (max-width: 1300px) {
+      width: 41%;
+    }
     @media screen and (max-width: 500px) {
       width: 70%;
     }
