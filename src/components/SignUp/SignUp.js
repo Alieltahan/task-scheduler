@@ -7,6 +7,7 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
+import { validateWhiteSpace } from '../lib/validateWhiteSpace';
 
 const Signup = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -25,7 +26,11 @@ const Signup = () => {
       setSubmitting(false);
       return toast.error(`Passwords doesn't match!`);
     }
+
     try {
+      validateWhiteSpace(inputs.firstName);
+      validateWhiteSpace(inputs.email);
+      validateWhiteSpace(inputs.password1);
       const respond = await createUserWithEmailAndPassword(
         auth,
         inputs.email,

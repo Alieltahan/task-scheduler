@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../../Firebase';
 import Input from '../common/Input';
 import useForm from '../lib/useForm';
+import { validateWhiteSpace } from '../lib/validateWhiteSpace';
 
 const Signin = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -18,6 +19,8 @@ const Signin = () => {
     e.preventDefault();
     setSubmitting(true);
     try {
+      validateWhiteSpace(inputs.email);
+      validateWhiteSpace(inputs.password);
       const { user } = await signInWithEmailAndPassword(
         auth,
         inputs.email,

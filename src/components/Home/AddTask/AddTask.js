@@ -4,6 +4,8 @@ import { auth, db } from '../../../Firebase';
 import { addDocFn } from '../../common/CRUD-Firebase';
 import Input from '../../common/Input';
 import useForm from '../../lib/useForm';
+import { validateWhiteSpace } from '../../lib/validateWhiteSpace';
+import { toast } from 'react-hot-toast';
 
 const AddTask = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -18,22 +20,34 @@ const AddTask = () => {
   const handleSubmit = async (e) => {
     setSubmitting(true);
     e.preventDefault();
+    try {
+      const { currentUser } = auth;
+      validateWhiteSpace(inputs.title);
+      validateWhiteSpace(inputs.email);
 
-    const { currentUser } = auth;
-
-    const taskRef = collection(db, 'users', `${currentUser.uid}`, 'tasks');
-    const res = await addDocFn(taskRef, {
-      title: inputs.title,
-      description: inputs.description,
-      priority: inputs.priority,
-      dueDate: inputs.dueDate,
-      addedDate: Timestamp.now(),
-      status: false,
-    });
-    if (res.status === 'success') {
-      resetForm();
+      const taskRef = collection(db, 'users', `${currentUser.uid}`, 'tasks');
+      const res = await addDocFn(taskRef, {
+        title: inputs.title,
+        description: inputs.description,
+        priority: inputs.priority,
+        dueDate: inputs.dueDate,
+        addedDate: Timestamp.now(),
+        status: false,
+      });
+      if (res.status === 'success') {
+        resetForm();
+      }
+    } catch (err) {
+      console.error(err.message);
+      toast.error(err.message);
     }
+
     setSubmitting(false);
+  };
+
+  const handleCancelAddTask = () => {
+    setShowForm(false);
+    resetForm();
   };
 
   return (
@@ -95,7 +109,7 @@ const AddTask = () => {
               Add Task
             </button>
             <button
-              onClick={() => setShowForm(false)}
+              onClick={handleCancelAddTask}
               type="submit"
               value="cancel"
               className="form__btn"
