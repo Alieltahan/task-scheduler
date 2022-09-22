@@ -23,7 +23,6 @@ const AddTask = () => {
     try {
       const { currentUser } = auth;
       validateWhiteSpace(inputs.title);
-      validateWhiteSpace(inputs.email);
 
       const taskRef = collection(db, 'users', `${currentUser.uid}`, 'tasks');
       const res = await addDocFn(taskRef, {
