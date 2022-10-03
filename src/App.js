@@ -14,7 +14,7 @@ import EditTaskPage from './pages/editTaskPage';
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   onAuthStateChanged(auth, (user) => {
     setUserLoggedIn(!!user?.uid);
     setLoading(false);

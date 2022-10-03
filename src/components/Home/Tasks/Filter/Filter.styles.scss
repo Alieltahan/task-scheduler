@@ -19,11 +19,20 @@
     }
     &__submit-container {
       width: 100%;
+      @media screen and (max-width: 831px) {
+        display: flex;
+        justify-content: center;
+      }
     }
     &__sortByDate {
       font-size: 1.5rem;
       width: 100%;
       text-align: end;
+      position: relative;
+      top: 4rem;
+      @media screen and (max-width: 831px) {
+        top: 0;
+      }
     }
     &__row {
       display: flex;
