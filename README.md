@@ -1,3 +1,44 @@
+# Task Scheduler App
+
+- [Overview](#Overview)
+- [Instrcutions](#Instrcutions)
+- [Dependencies](#Dependencies)
+- [Project_technologies](#Project_technologies)
+- [Author](#Author)
+
+## Overview
+
+### An app to help you organize your tasks with the following features:
+
+1. Sign up/Sign in with Email/Password.
+1. Add/remove Task.
+1. Filter Tasks based on (Specific Date/ Completed - Pending / task priority).
+1. Search Tasks by title.
+1. Sort tasks Asc/Des due date.
+1. Toggle tasks as completed/pending.
+1. Edit tasks (Title/Completed-Pending)
+1. Sign out.
+
+## Instructions
+
+Sign up/in and start using the App
+App [Demo](http://task-scheduler.alieltahan.com/)
+
+### Dependencies
+
+1. Javascript activated in the browsing browser.
+2. A signle command in the CLI will install all the dependencies: `npm install` (React / React-Router-Dom / React-hot-toast / Styled-Components )
+
+### Project_technologies
+
+**Frontend**: React
+
+**Backend**: Firebase
+
+### Author
+
+_Ali Eltahan_.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

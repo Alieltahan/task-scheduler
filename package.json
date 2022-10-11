@@ -1,5 +1,7 @@
 {
-  "name": "1-wbws",
+  "name": "task-scheduler",
+  "author": "Ali Eltahan",
+  "description": "Task scheduler App",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
