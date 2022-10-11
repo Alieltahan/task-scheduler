@@ -26,8 +26,9 @@
     }
     &__sortByDate {
       font-size: 1.5rem;
-      width: 100%;
+      width: 30%;
       text-align: end;
+      margin-left: auto;
       position: relative;
       top: 4rem;
       @media screen and (max-width: 831px) {
