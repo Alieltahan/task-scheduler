@@ -22,7 +22,8 @@
 ## Instructions
 
 Sign up/in and start using the App
-App [Demo](http://task-scheduler.alieltahan.com/)
+
+- Check out [Demo](http://task-scheduler.alieltahan.com/)
 
 ### Dependencies
 
