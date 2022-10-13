@@ -1,10 +1,15 @@
 # Task Scheduler App
 
+- [Demo](#Demo)
 - [Overview](#Overview)
 - [Instrcutions](#Instrcutions)
 - [Dependencies](#Dependencies)
 - [Project_technologies](#Project_technologies)
 - [Author](#Author)
+
+## Demo
+
+- Check out App [Demo](http://task-scheduler.alieltahan.com/)
 
 ## Overview
 
@@ -22,8 +27,6 @@
 ## Instructions
 
 Sign up/in and start using the App
-
-- Check out [Demo](http://task-scheduler.alieltahan.com/)
 
 ### Dependencies
 
