@@ -35,6 +35,7 @@ const AddTask = () => {
       });
       if (res.status === 'success') {
         resetForm();
+        setShowForm(false);
       }
     } catch (err) {
       console.error(err.message);
